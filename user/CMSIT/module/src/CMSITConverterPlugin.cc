@@ -20,22 +20,45 @@ void TheConverter::ConverterForQuad(int& row, int& col, const int& chipIdMod4)
     // ###########################################
     // # @TMP@: mapping quad chips is hard-coded #
     // ###########################################
-    if(chipIdMod4 == 3)
+    // XXX - not working properly with TBPX modules
+    // if(chipIdMod4 == 3)
+    // {
+    //     row = nRows + row;
+    //     col = nCols + col;
+    // }
+    // else if(chipIdMod4 == 2)
+    // {
+    //     row = nRows + row;
+    //     col = col;
+    // }
+    // else if(chipIdMod4 == 1)
+    // {
+    //     row = nRows - 1 - row;
+    //     col = nCols - 1 - col;
+    // }
+    // else if(chipIdMod4 == 0)
+    // {
+    //     row = nRows - 1 - row;
+    //     col = nCols + nCols - 1 - col;
+    // }
+    // XXX - Hardcoded for TBPX quad modules TB April 2026
+    if(chipIdMod4 == 2)
     {
+
         row = nRows + row;
         col = nCols + col;
     }
-    else if(chipIdMod4 == 2)
+    else if(chipIdMod4 == 3)
     {
         row = nRows + row;
         col = col;
     }
-    else if(chipIdMod4 == 1)
+    else if(chipIdMod4 == 0)
     {
         row = nRows - 1 - row;
         col = nCols - 1 - col;
     }
-    else if(chipIdMod4 == 0)
+    else if(chipIdMod4 == 1)
     {
         row = nRows - 1 - row;
         col = nCols + nCols - 1 - col;
@@ -320,12 +343,12 @@ TheConverter CMSITConverterPlugin::GetChipGeometry(const std::string& cfgFromDat
         nRows *= 2;
     }
 
-    if(cfg.find("dual") != std::string::npos)
+    if((cfg.find("dual") != std::string::npos) || (cfg.find("DUAL") != std::string::npos))
     {
         theConverter.theSensor = TheConverter::SensorType::DualChip;
         nCols *= 2;
     }
-    else if(cfg.find("quad") != std::string::npos)
+    else if((cfg.find("quad") != std::string::npos) || (cfg.find("QUAD") != std::string::npos))
     {
         theConverter.theSensor = TheConverter::SensorType::QuadChip;
         nCols *= 2;
