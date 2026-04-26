@@ -10,6 +10,11 @@
 
 #include "CMSITConverterPlugin.hh"
 
+// XXX - Debug to search for the file
+#include <unistd.h>
+#include <limits.h>
+
+
 using namespace eudaq;
 
 // #####################################
@@ -239,6 +244,15 @@ bool CMSITConverterPlugin::Converting(EventSPC ev, StandardEventSP sev, Configur
 
 void CMSITConverterPlugin::Initialize()
 {
+    // XXX - Debug to search for the file
+
+char cwd[PATH_MAX];
+getcwd(cwd, sizeof(cwd));
+
+EUDAQ_INFO(std::string("CWD = ") + cwd);
+EUDAQ_INFO(std::string("Looking for CFG_FILE_NAME = ") + CFG_FILE_NAME);
+
+
     theTLUtriggerId_previous = 0;
     theConfigFromFile        = nullptr;
     std::ifstream cfgFile(CFG_FILE_NAME);
