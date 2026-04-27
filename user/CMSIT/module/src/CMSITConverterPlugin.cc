@@ -9,8 +9,6 @@
 */
 
 #include "CMSITConverterPlugin.hh"
-
-// XXX - Debug to search for the file
 #include <unistd.h>
 #include <limits.h>
 
@@ -245,27 +243,43 @@ bool CMSITConverterPlugin::Converting(EventSPC ev, StandardEventSP sev, Configur
 void CMSITConverterPlugin::Initialize()
 {
     // XXX - Debug to search for the file
-
-char cwd[PATH_MAX];
-getcwd(cwd, sizeof(cwd));
-
-EUDAQ_INFO(std::string("CWD = ") + cwd);
-EUDAQ_INFO(std::string("Looking for CFG_FILE_NAME = ") + CFG_FILE_NAME);
+    char cwd[PATH_MAX];
+    getcwd(cwd, sizeof(cwd));
+    EUDAQ_INFO(std::string("CWD = ") + cwd);
+    EUDAQ_INFO(std::string("Looking for CFG_FILE_NAME = ") + CFG_FILE_NAME + std::string(" in path = ") + CFG_FILE_PATH);
 
 
     theTLUtriggerId_previous = 0;
     theConfigFromFile        = nullptr;
-    std::ifstream cfgFile(CFG_FILE_NAME);
 
-    if(cfgFile.good() == true)
-    {
+    std::string fullPath = std::string(CFG_FILE_PATH) + CFG_FILE_NAME;
+    std::ifstream cfgFile;
+    bool file_found = false;
+    if(std::ifstream(CFG_FILE_NAME).good() == true)
+    { 
+        cfgFile.open(CFG_FILE__NAME);
         std::stringstream myString;
         myString.clear();
         myString.str("");
         myString << "[EUDAQ::CMSITConverterPlugin::Initialize] --> Found cfg file: " << CFG_FILE_NAME;
         EUDAQ_INFO(myString.str().c_str());
         theConfigFromFile = std::make_shared<Configuration>(Configuration(cfgFile));
+        file_found = true;
+    } 
+    else if(std::ifstream(fullPath).good() == true)
+    {
+        cfgFile.open(fullPath);
+        std::stringstream myString;
+        myString.clear();
+        myString.str("");
+        myString << "[EUDAQ::CMSITConverterPlugin::Initialize] --> Found cfg file in full path: " << fullPath;
+        EUDAQ_INFO(myString.str().c_str());
+        theConfigFromFile = std::make_shared<Configuration>(Configuration(cfgFile));
+        file_found = true;
+    }
 
+    if(file_found)
+    {
         if(theConfigFromFile != nullptr)
         {
             // ########################

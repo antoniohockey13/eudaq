@@ -75,6 +75,7 @@ static const int         MAXTRIGIDCNT       = 32767;
 // # bin directory                                                     #
 // #####################################################################
 static const char* CFG_FILE_NAME = "CMSIT.cfg";
+static const char* CFG_FILE_PATH = "/data/analysis/";
 
 // #####################################
 // # Row, Column, and Charge converter #
