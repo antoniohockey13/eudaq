@@ -255,10 +255,10 @@ void CMSITConverterPlugin::Initialize()
     std::string fullPath = std::string(CFG_FILE_PATH) + CFG_FILE_NAME;
     std::ifstream cfgFile;
     bool file_found = false;
+    std::stringstream myString;
     if(std::ifstream(CFG_FILE_NAME).good() == true)
     { 
-        cfgFile.open(CFG_FILE__NAME);
-        std::stringstream myString;
+        cfgFile.open(CFG_FILE_NAME);
         myString.clear();
         myString.str("");
         myString << "[EUDAQ::CMSITConverterPlugin::Initialize] --> Found cfg file: " << CFG_FILE_NAME;
